@@ -3,16 +3,45 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use App\Traits\ApiResponseTrait;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        $handler = new class {
+            use ApiResponseTrait;
+        };
+        $exceptions->render(function (ValidationException $e) use ($handler) {
+            return $handler->responseError($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        });
+
+        $exceptions->render(function (UnauthorizedHttpException $e) use ($handler) {
+            return $handler->responseError($e->getMessage(), Response::HTTP_UNAUTHORIZED);
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e) use ($handler) {
+            return $handler->responseError($e->getMessage(), Response::HTTP_NOT_FOUND);
+        });
+
+        $exceptions->render(function (BadRequestHttpException $e) use ($handler) {
+            return $handler->responseError($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        });
+
+        $exceptions->render(function (Exception $e) use ($handler) {
+            return $handler->responseError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        });
         //
     })->create();
