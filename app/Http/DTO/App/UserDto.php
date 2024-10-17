@@ -4,14 +4,14 @@ namespace App\Http\DTO\App;
 
 use App\Http\Requests\SettingUserRequest;
 
-class UserDto
-{
+ readonly class UserDto
+ {
 
 
     public function __construct(
-        public readonly string $name,
-        public readonly string $email,
-        public readonly string $password,
+        public string $name,
+        public string $email,
+        public string $password,
     ) {
 
     }//end __construct()
@@ -39,4 +39,4 @@ class UserDto
     }//end toArray()
 
 
-}//end class
+ }//end class
