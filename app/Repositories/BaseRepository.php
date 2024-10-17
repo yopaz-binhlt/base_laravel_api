@@ -139,11 +139,7 @@ abstract class BaseRepository
      */
     public function create(array $attributes)
     {
-        try {
-            return $this->model->newQuery()->create($attributes);
-        } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
-        }
+        return $this->model->newQuery()->create($attributes);
 
     }//end create()
 
@@ -155,11 +151,7 @@ abstract class BaseRepository
      */
     public function insert(array $attributes)
     {
-        try {
-            return $this->model->insert($attributes);
-        } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
-        }
+        return $this->model->insert($attributes);
 
     }//end insert()
 
@@ -171,8 +163,8 @@ abstract class BaseRepository
      */
     public function update($id, array $attributes)
     {
-        $result = $this->model->newQuery()->findOrFail($id);
-        $result->update($attributes);
+        $result = $this->model->findOrFail($id);
+        return $result->update($attributes);
 
     }//end update()
 
@@ -184,12 +176,8 @@ abstract class BaseRepository
      */
     public function delete($id)
     {
-        try {
-            $result = $this->findOrFail($id);
-            $result->delete();
-        } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
-        }
+        $result = $this->findOrFail($id);
+        return $result->delete();
 
     }//end delete()
 
@@ -236,11 +224,7 @@ abstract class BaseRepository
 
     public function updateOrCreate($where, $attributes)
     {
-        try {
-            return $this->model->updateOrCreate($where, $attributes);
-        } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
-        }
+        return $this->model->updateOrCreate($where, $attributes);
 
     }//end updateOrCreate()
 

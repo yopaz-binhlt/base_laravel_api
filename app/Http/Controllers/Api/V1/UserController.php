@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\DTO\App\UserDto;
+use App\Http\DTO\App\User\CreateUserDto;
 use App\Http\Requests\SettingUserRequest;
+use App\Http\Resources\User\UserCollection;
 use App\Services\App\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Resources\User\UserCollection;
 
 class UserController extends Controller
 {
@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function store(SettingUserRequest $request)
     {
-        $data = $this->userService->create(UserDto::fromApiRequest($request));
+        $data = $this->userService->create(CreateUserDto::fromApiRequest($request));
         return self::responseSuccess($data);
 
     }//end store()

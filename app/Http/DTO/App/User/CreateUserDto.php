@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\DTO\App;
+namespace App\Http\DTO\App\User;
 
 use App\Http\Requests\SettingUserRequest;
 
-class UserDto
+class CreateUserDto
 {
 
 
@@ -17,7 +17,7 @@ class UserDto
     }//end __construct()
 
 
-    public static function fromApiRequest(SettingUserRequest $request): UserDto
+    public static function fromApiRequest(SettingUserRequest $request): CreateUserDto
     {
         return new self(
             name: $request->validated('name'),

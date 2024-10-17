@@ -2,9 +2,8 @@
 
 namespace App\Services\App;
 
-use App\Http\DTO\App\UserDto;
-use App\Services\Service;
 use App\Repositories\UserRepository;
+use App\Services\Service;
 
 class UserService extends Service
 {
