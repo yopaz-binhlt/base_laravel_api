@@ -2,8 +2,6 @@
 
 namespace App\Http\DTO\App;
 
-use App\Http\Requests\SettingUserRequest;
-
 class UserDto
 {
 
@@ -17,12 +15,12 @@ class UserDto
     }//end __construct()
 
 
-    public static function fromApiRequest(SettingUserRequest $request): UserDto
+    public static function fromApiRequest($request): UserDto
     {
         return new self(
-            name: $request->validated('name'),
-            email: $request->validated('email'),
-            password: $request->validated('password'),
+            name: $request->name,
+            email: $request->email,
+            password: $request->password
         );
 
     }//end fromApiRequest()

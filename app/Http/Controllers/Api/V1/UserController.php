@@ -9,9 +9,12 @@ use App\Services\App\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\User\UserCollection;
+use Illuminate\Validation\ValidationException;
+use App\Traits\ValidatesRequestTrait;
 
 class UserController extends Controller
 {
+    use ValidatesRequestTrait;
 
     private $userService;
 
@@ -44,6 +47,22 @@ class UserController extends Controller
     public function store(SettingUserRequest $request)
     {
         $data = $this->userService->create(UserDto::fromApiRequest($request));
+
+        //if request is array
+        //        $request = [
+        //            'name' => 'test',
+        //            'email' => 'binh',
+        //            'password' => '123456'
+        //        ];
+        //        $validated = $this->validateRequest($request, new SettingUserRequest());
+        //
+        //        $userDto = new UserDto(
+        //            $validated['name'],
+        //            $validated['email'],
+        //            $validated['password']);
+        //
+        //        $data = $this->userService->create($userDto);
+
         return self::responseSuccess($data);
 
     }//end store()
