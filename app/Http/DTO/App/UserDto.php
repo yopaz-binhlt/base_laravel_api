@@ -2,25 +2,27 @@
 
 namespace App\Http\DTO\App;
 
-class UserDto
-{
+use App\Http\Requests\SettingUserRequest;
+
+ readonly class UserDto
+ {
 
 
     public function __construct(
-        public readonly string $name,
-        public readonly string $email,
-        public readonly string $password,
+        public string $name,
+        public string $email,
+        public string $password,
     ) {
 
     }//end __construct()
 
 
-    public static function fromApiRequest($request): UserDto
+    public static function fromApiRequest(SettingUserRequest $request): UserDto
     {
         return new self(
-            name: $request->name,
-            email: $request->email,
-            password: $request->password
+            name: $request->validated('name'),
+            email: $request->validated('email'),
+            password: $request->validated('password'),
         );
 
     }//end fromApiRequest()
@@ -37,4 +39,4 @@ class UserDto
     }//end toArray()
 
 
-}//end class
+ }//end class
