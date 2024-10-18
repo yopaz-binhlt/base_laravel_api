@@ -1,0 +1,5 @@
+-   [ ] Setup Reviewers,Assignees
+-   [ ] Setup issue link
+-   [ ] Do self test on the local environment
+-   [ ] 80% of cases in checklist are passed
+-   [ ] Notes
