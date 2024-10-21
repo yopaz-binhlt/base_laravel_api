@@ -1,0 +1,94 @@
+volumes:
+    php-fpm-socket:
+    db-store:
+
+services:
+    app:
+        container_name: base_api_app
+        build:
+            context: .
+            dockerfile: ./docker/php/Dockerfile
+        volumes:
+            - php-fpm-socket:/var/run/php-fpm
+            - .:/var/www/app
+        networks:
+            - app-network
+
+    nginx:
+        container_name: base_api_nginx
+        build:
+            context: .
+            dockerfile: ./docker/nginx/Dockerfile
+        ports:
+            - 8009:80
+            - 8443:443
+        volumes:
+            - php-fpm-socket:/var/run/php-fpm
+            - .:/var/www/app
+        networks:
+            - app-network
+
+    database:
+        container_name: base_api_database
+        build:
+            context: .
+            dockerfile: ./docker/mysql/Dockerfile
+        ports:
+            - 3307:3306
+        volumes:
+            - db-store:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: base_api
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: root
+        networks:
+            - app-network
+
+    phpmyadmin:
+        container_name: base_api_phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOSTS=base_api_database
+            - PMA_USER=root
+            - PMA_PASSWORD=root
+        ports:
+            - 8091:80
+        networks:
+            - app-network
+
+    node:
+        container_name: base_api_node
+        image: node:18-slim
+        volumes:
+            - .:/var/www/app
+        working_dir: /var/www/app
+        command: [ "npm", "install" ]  # Chạy npm install khi container khởi động
+        networks:
+            - app-network
+
+    mailhog:
+        image: mailhog/mailhog:latest
+        ports:
+            - "8025:8025"
+        networks:
+            - app-network
+
+    minio:
+        image: minio/minio:latest
+        ports:
+            - "9002:9002"
+            - "9001:9001"
+        volumes:
+            - ./tmp/minio/data:/data
+        command: [ "minio", "server", "/data", "--console-address", ":9001", "--address", ":9002"]
+        environment:
+            MINIO_ROOT_USER: minio
+            MINIO_ROOT_PASSWORD: miniominio
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

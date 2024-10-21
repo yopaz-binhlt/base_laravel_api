@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\User\UserCollection;
 use App\Traits\ValidatesRequestTrait;
 use App\Services\External\NavitimeGateway\AddressGatewayService;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -35,6 +36,12 @@ class UserController extends Controller
      */
     public function index()
     {
+        try {
+            Storage::disk('s3')->put('test.txt', 'Hello World');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
         $data = $this->userService->getList();
         return self::responseSuccess(new UserCollection($data));
 
