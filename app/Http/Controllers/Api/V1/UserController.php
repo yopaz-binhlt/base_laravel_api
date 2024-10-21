@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\User;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\App\CreatUserDto;
 use App\Http\Requests\SettingUserRequest;
@@ -34,7 +35,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        $adress = $this->addressGatewayService->getAddressFromWord('東京');
         $data = $this->userService->getList();
         return self::responseSuccess(new UserCollection($data));
 
