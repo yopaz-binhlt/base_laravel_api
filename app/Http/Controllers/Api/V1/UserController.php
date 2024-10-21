@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\User\UserCollection;
 use App\Traits\ValidatesRequestTrait;
+use App\Services\External\NavitimeGateway\AddressGatewayService;
 
 class UserController extends Controller
 {
@@ -17,10 +18,13 @@ class UserController extends Controller
 
     private $userService;
 
+    private $addressGatewayService;
 
-    public function __construct(UserService $userService)
+
+    public function __construct(UserService $userService, AddressGatewayService $addressGatewayService)
     {
         $this->userService = $userService;
+        $this->addressGatewayService = $addressGatewayService;
 
     }//end __construct()
 
@@ -30,6 +34,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $adress = $this->addressGatewayService->getAddressFromWord('東京');
         $data = $this->userService->getList();
         return self::responseSuccess(new UserCollection($data));
 
