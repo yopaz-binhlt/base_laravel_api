@@ -10,8 +10,6 @@ class AddressGatewayService extends NavitimeBaseGateway
 
     public function getAddressFromWord(string $word, int $limit=null): array
     {
-        $result = [];
-
         try {
             $endpoint = config('external.navitime_setting.api.address_search.endpoint');
             $params = $this->getApiParam();
@@ -34,7 +32,7 @@ class AddressGatewayService extends NavitimeBaseGateway
             throw $e;
         }//end try
 
-        return $result;
+        return $responseData;
 
     }//end getAddressFromWord()
 

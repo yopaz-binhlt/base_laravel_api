@@ -14,11 +14,8 @@ trait ApiResponseTrait
         $response = [
             'code'   => $code,
             'status' => 'success',
+            'data'   => $data,
         ];
-
-        if ($data) {
-            $response['data'] = $data;
-        }
 
         return response()->json($response);
 
@@ -31,16 +28,10 @@ trait ApiResponseTrait
             'code'    => $code,
             'status'  => 'error',
             'message' => $message,
+            'data'    => $data,
         ];
 
-        if ($data) {
-            $response['data'] = $data;
-        }
-
-        return response()->json(
-            $response,
-            $code
-        );
+        return response()->json($response, $code);
 
     }//end responseError()
 
