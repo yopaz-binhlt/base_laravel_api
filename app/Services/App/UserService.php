@@ -2,7 +2,7 @@
 
 namespace App\Services\App;
 
-use App\Http\DTO\App\UserDto;
+use App\Http\DTO\App\CreatUserDto;
 use App\Services\Service;
 use App\Repositories\UserRepository;
 
