@@ -12,15 +12,20 @@ abstract class ExternalService
     protected array $apiParam;
 
 
-    /**
-     * Abstract function to configure settings, to be implemented by subclasses
-     */
-    abstract protected function configure(): void;
+    abstract protected function setUrl();
+
+
+    abstract protected function setApiTimeout();
+
+
+    abstract protected function setApiParam();
 
 
     public function __construct()
     {
-        $this->configure();
+        $this->setUrl();
+        $this->setApiTimeout();
+        $this->setApiParam();
 
     }//end __construct()
 
