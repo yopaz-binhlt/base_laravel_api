@@ -3,26 +3,24 @@
 namespace App\Services\External\NavitimeGateway;
 
 
-class NavitimeBaseGateway
+use App\Services\External\ExternalService;
+
+class NavitimeBaseGateway extends ExternalService
 {
 
-    protected $url;
 
-    protected $apiTimeout;
-
-    protected $apiParam;
-
-
-    public function __construct()
+    protected function configure(): void
     {
         $this->url = config('external.navitime_setting.api.url').'/'.config('external.navitime_setting.api.client_id').'/'.config('external.navitime_setting.api.api_version');
-        $this->apiTimeout = config('navitime_setting.api_timeout');
+
+        $this->apiTimeout = config('external.navitime_setting.api.timeout');
+
         $this->apiParam = [
-            'request_code' => config('navitime_setting.request_code'),
-            'signature'    => config('navitime_setting.signature'),
+            'request_code' => config('external.navitime_setting.api.request_code'),
+            'signature'    => config('external.navitime_setting.api.signature'),
         ];
 
-    }//end __construct()
+    }//end configure()
 
 
 }//end class

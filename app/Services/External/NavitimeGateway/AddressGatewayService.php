@@ -14,12 +14,13 @@ class AddressGatewayService extends NavitimeBaseGateway
 
         try {
             $endpoint = config('external.navitime_setting.api.address_search.endpoint');
-            $this->apiParam['word'] = $word;
+            $params = $this->getApiParam();
+            $params['word'] = $word;
             if ($limit === null) {
-                $this->apiParam['limit'] = $limit;
+                $params['limit'] = $limit;
             }
 
-            $response = Http::timeout($this->apiTimeout)->get($this->url.$endpoint, $this->apiParam);
+            $response = Http::timeout($this->getApiTimeout())->get($this->getUrl().$endpoint, $params);
             $responseData = $response->json();
 
             if (!$response->ok()) {
